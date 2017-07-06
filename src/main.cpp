@@ -2,8 +2,10 @@
 #include "enbodiedapp.h"
 
 int main(int argc, char* argv[]) {
+	EnbodiedApp app;
+
 	for (int i = 1; i < argc; i++)
 		std::cout << i << " " << argv[i] << std::endl;
-	std::cout << "Test" << std::endl;
-	return 0;
+
+	return app.OnExecute();
 }
