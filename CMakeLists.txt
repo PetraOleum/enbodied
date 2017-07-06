@@ -16,9 +16,11 @@ include_directories(${SDL2_INCLUDE_DIRS})
 set(SOURCE_FILES 
 	${CMAKE_SOURCE_DIR}/main.cpp
 	${CMAKE_SOURCE_DIR}/enbodiedapp.cpp
+	${CMAKE_SOURCE_DIR}/orbitals.cpp
 )
 
 add_executable(enbodied ${SOURCE_FILES})
+target_link_libraries(enbodied m)
 target_link_libraries(enbodied ${SDL2_LIBRARIES})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
