@@ -23,9 +23,14 @@ target_link_libraries(enbodied ${SDL2_LIBRARIES})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
+#IF( EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
+#	EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#		${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
+#		${CMAKE_SOURCE_DIR}/compile_commands.json
+#	)
+#ENDIF()
+
 IF( EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
-	EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E copy_if_different
-		${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json
-		${CMAKE_SOURCE_DIR}/compile_commands.json
+	EXECUTE_PROCESS( COMMAND ln -sfn ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
 	)
 ENDIF()
