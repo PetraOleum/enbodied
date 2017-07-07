@@ -90,8 +90,6 @@ void EnbodiedApp::OnRender() {
 
 	int minwin = (winX < winY) ? winX : winY;
 
-	int timestep = 10;
-
 	filledCircleRGBA(renderer, 
 			(Sint16)((Earth.posX - centreX) * scale + winX / 2),
 			(Sint16)((Earth.posY - centreY) * scale + winY / 2),
@@ -102,8 +100,8 @@ void EnbodiedApp::OnRender() {
 
 	for (int i = -0; i < 201; i++) {
 		points[i] = {
-			(int)((ISS.tayX.Calculate((i - 100) * timestep, 1) - centreX) * scale + winX / 2),
-			(int)((ISS.tayY.Calculate((i - 100) * timestep, 1) - centreY) * scale + winY / 2)
+			(int)((ISS.tayX.Calculate((i - 100) * taylorTimestep, 1) - centreX) * scale + winX / 2),
+			(int)((ISS.tayY.Calculate((i - 100) * taylorTimestep, 1) - centreY) * scale + winY / 2)
 		};
 	}
 
@@ -113,8 +111,8 @@ void EnbodiedApp::OnRender() {
 
 	for (int i = 0; i < 201; i++) {
 		points[i] = {
-			(int)((ISS.tayX.Calculate((i - 100) * timestep, 2) - centreX) * scale + winX / 2),
-			(int)((ISS.tayY.Calculate((i - 100) * timestep, 2) - centreY) * scale + winY / 2)
+			(int)((ISS.tayX.Calculate((i - 100) * taylorTimestep, 2) - centreX) * scale + winX / 2),
+			(int)((ISS.tayY.Calculate((i - 100) * taylorTimestep, 2) - centreY) * scale + winY / 2)
 		};
 	}
 
@@ -124,8 +122,8 @@ void EnbodiedApp::OnRender() {
 
 	for (int i = -0; i < 201; i++) {
 		points[i] = {
-			(int)((ISS.tayX.Calculate((i - 100) * timestep, 3) - centreX) * scale + winX / 2),
-			(int)((ISS.tayY.Calculate((i - 100) * timestep, 3) - centreY) * scale + winY / 2)
+			(int)((ISS.tayX.Calculate((i - 100) * taylorTimestep, 3) - centreX) * scale + winX / 2),
+			(int)((ISS.tayY.Calculate((i - 100) * taylorTimestep, 3) - centreY) * scale + winY / 2)
 		};
 	}
 
@@ -188,6 +186,12 @@ void EnbodiedApp::onKeyDown(SDL_KeyboardEvent * keyEvent) {
 			break;
 		case SDLK_c:
 			centreOnISS = !centreOnISS;
+			break;
+		case SDLK_PAGEUP:
+			taylorTimestep = (taylorTimestep <= 0) ? 10 : taylorTimestep * 1.1;
+			break;
+		case SDLK_PAGEDOWN:
+			taylorTimestep = (taylorTimestep <= 0) ? 10 : taylorTimestep / 1.1;
 			break;
 		default:
 			break;

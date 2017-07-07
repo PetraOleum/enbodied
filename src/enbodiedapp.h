@@ -26,6 +26,8 @@ class EnbodiedApp {
 
 		double scale = 7.0e-5;
 
+		double taylorTimestep = 10;
+
 		bool running = false;
 
 		SDL_Window * window = NULL;
