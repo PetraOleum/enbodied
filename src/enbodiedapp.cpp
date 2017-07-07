@@ -57,12 +57,39 @@ bool EnbodiedApp::OnInit() {
 
 void EnbodiedApp::OnLoop() {
 
+	std::pair<double, double> of = force(ISS, Earth);
+
+	of.first /= ISS.mass;
+	of.second /= ISS.mass;
+	ISS.tayX.setDerivative(3, of.first - ISS.tayX.getDerivative(2));
+	ISS.tayX.setDerivative(2, of.first);
+	ISS.velX += of.first;
+	ISS.tayX.setDerivative(1, ISS.velX);
+	ISS.posX += ISS.velX;
+	ISS.tayX.setDerivative(0, ISS.posX);
+	ISS.tayY.setDerivative(3, of.second - ISS.tayY.getDerivative(2));
+	ISS.tayY.setDerivative(2, of.second);
+	ISS.velY += of.second;
+	ISS.tayY.setDerivative(1, ISS.velY);
+	ISS.posY += ISS.velY;
+	ISS.tayY.setDerivative(0, ISS.posY);
+
 }
 
 void EnbodiedApp::OnRender() {
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(renderer);
 	SDL_GetWindowSize(window, &winX, &winY);
+
+	int minwin = (winX < winY) ? winX : winY;
+
+	double scale = minwin/7000000.0;
+
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+	SDL_RenderDrawPoint(renderer, (int)(ISS.posX * scale), (int)(ISS.posY * scale));
+
+	printf("%d, %d\t%f,%f\n",(int)(ISS.posX * scale), (int)(ISS.posY * scale), ISS.velX, ISS.velY);
 
 	SDL_RenderPresent(renderer);
 }

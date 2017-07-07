@@ -4,6 +4,7 @@
 #include <utility>
 #include <cmath>
 #include <vector>
+#include "taylor.h"
 
 /// @brief The gravitational constant
 const double G = 6.67428e-11;
@@ -12,7 +13,11 @@ const double G = 6.67428e-11;
  * @brief Struct for holding a classical, Keplarian orbit
  */
 struct KeplerParameters {
-
+	double Epoch = 0;
+	double ARGP;
+	double ecce;
+	double N0;
+	double M0;
 };
 
 /**
@@ -26,6 +31,8 @@ struct Body {
 	double velX;
 	double velY;
 	bool onRails;
+	Taylor tayX;
+	Taylor tayY;
 };
 
 
