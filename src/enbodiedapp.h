@@ -37,12 +37,12 @@ class EnbodiedApp {
 		};
 
 		Body ISS = {
-			0,
 			400000 + 6371000,
+			0,
 			1,
 			419600,
-			7667,
 			0,
+			7667,
 			false,
 			Taylor(3),
 			Taylor(3)
