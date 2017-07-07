@@ -18,6 +18,11 @@ class EnbodiedApp {
 
 		int winY = INIT_SCREEN_HEIGHT;
 
+		double centreX = 0;
+		double centreY = 0;
+
+		double scale = 7.0e-5;
+
 		bool running = false;
 
 		SDL_Window * window = NULL;

@@ -85,8 +85,6 @@ void EnbodiedApp::OnRender() {
 
 	int minwin = (winX < winY) ? winX : winY;
 
-	double scale = minwin/7000000.0;
-
 	int timestep = 10;
 
 
@@ -94,8 +92,8 @@ void EnbodiedApp::OnRender() {
 
 	for (int i = -0; i < 201; i++) {
 		points[i] = {
-			(int)(ISS.tayX.Calculate((i - 100) * timestep, 1) * scale),
-			(int)(ISS.tayY.Calculate((i - 100) * timestep, 1) * scale)
+			(int)((ISS.tayX.Calculate((i - 100) * timestep, 1) - centreX) * scale + winX / 2),
+			(int)((ISS.tayY.Calculate((i - 100) * timestep, 1) - centreY) * scale + winY / 2)
 		};
 	}
 
@@ -103,10 +101,10 @@ void EnbodiedApp::OnRender() {
 
 	SDL_RenderDrawLines(renderer, points, 201);
 
-	for (int i = -0; i < 201; i++) {
+	for (int i = 0; i < 201; i++) {
 		points[i] = {
-			(int)(ISS.tayX.Calculate((i - 100) * timestep, 2) * scale),
-			(int)(ISS.tayY.Calculate((i - 100) * timestep, 2) * scale)
+			(int)((ISS.tayX.Calculate((i - 100) * timestep, 2) - centreX) * scale + winX / 2),
+			(int)((ISS.tayY.Calculate((i - 100) * timestep, 2) - centreY) * scale + winY / 2)
 		};
 	}
 
@@ -116,8 +114,8 @@ void EnbodiedApp::OnRender() {
 
 	for (int i = -0; i < 201; i++) {
 		points[i] = {
-			(int)(ISS.tayX.Calculate((i - 100) * timestep, 3) * scale),
-			(int)(ISS.tayY.Calculate((i - 100) * timestep, 3) * scale)
+			(int)((ISS.tayX.Calculate((i - 100) * timestep, 3) - centreX) * scale + winX / 2),
+			(int)((ISS.tayY.Calculate((i - 100) * timestep, 3) - centreY) * scale + winY / 2)
 		};
 	}
 
@@ -127,7 +125,7 @@ void EnbodiedApp::OnRender() {
 
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-	SDL_RenderDrawPoint(renderer, (int)(ISS.posX * scale), (int)(ISS.posY * scale));
+	SDL_RenderDrawPoint(renderer, (int)((ISS.posX - centreX) * scale + winX / 2), (int)((ISS.posY - centreY) * scale + winY / 2));
 
 //	printf("%d, %d\t%f,%f\n",(int)(ISS.posX * scale), (int)(ISS.posY * scale), ISS.velX, ISS.velY);
 
@@ -157,5 +155,29 @@ void EnbodiedApp::OnCleanup() {
 }
 
 void EnbodiedApp::onKeyDown(SDL_KeyboardEvent * keyEvent) {
+	switch(keyEvent->keysym.sym) {
+		case SDLK_MINUS:
+		case SDLK_KP_MINUS:
+			scale = (scale <= 0) ? 1.0e-4 : scale / 1.1;
+			break;
+		case SDLK_PLUS:
+		case SDLK_KP_PLUS:
+			scale = (scale <= 0) ? 1.0e-4 : scale * 1.1;
+			break;
+		case SDLK_LEFT:
+			centreX -= 50 / scale;
+			break;
+		case SDLK_RIGHT:
+			centreX += 50 / scale;
+			break;
+		case SDLK_UP:
+			centreY -= 50 / scale;
+			break;
+		case SDLK_DOWN:
+			centreY += 50 / scale;
+			break;
+		default:
+			break;
+	}
 
 }
