@@ -87,6 +87,44 @@ void EnbodiedApp::OnRender() {
 
 	double scale = minwin/7000000.0;
 
+	int timestep = 10;
+
+
+	SDL_Point points[201];
+
+	for (int i = -0; i < 201; i++) {
+		points[i] = {
+			(int)(ISS.tayX.Calculate((i - 100) * timestep, 1) * scale),
+			(int)(ISS.tayY.Calculate((i - 100) * timestep, 1) * scale)
+		};
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0x00, 0xAF, 0x00, 0xFF);
+
+	SDL_RenderDrawLines(renderer, points, 201);
+
+	for (int i = -0; i < 201; i++) {
+		points[i] = {
+			(int)(ISS.tayX.Calculate((i - 100) * timestep, 2) * scale),
+			(int)(ISS.tayY.Calculate((i - 100) * timestep, 2) * scale)
+		};
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0xAF, 0x00, 0x00, 0xFF);
+
+	SDL_RenderDrawLines(renderer, points, 201);
+
+	for (int i = -0; i < 201; i++) {
+		points[i] = {
+			(int)(ISS.tayX.Calculate((i - 100) * timestep, 3) * scale),
+			(int)(ISS.tayY.Calculate((i - 100) * timestep, 3) * scale)
+		};
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xAF, 0xFF);
+
+	SDL_RenderDrawLines(renderer, points, 201);
+
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 	SDL_RenderDrawPoint(renderer, (int)(ISS.posX * scale), (int)(ISS.posY * scale));

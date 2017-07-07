@@ -42,7 +42,7 @@ class EnbodiedApp {
 			1,
 			419600,
 			0,
-			7667,
+			5667,
 			false,
 			Taylor(3),
 			Taylor(3)

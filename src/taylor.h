@@ -49,7 +49,11 @@ class Taylor {
 		/// @param index The index
 		///
 		/// @return The derivatives array value
-		double getDerivative(unsigned int index) const ;
+		inline double getDerivative(unsigned int index) const {
+			if (index >= arrsize)
+				return 0;
+			return derivatives[index];
+		}
 
 		/// @brief Set a derivative value, resizing underlying array if larger than
 		///
@@ -84,6 +88,8 @@ class Taylor {
 		}
 
 		double Calculate(double x) const;
+
+		double Calculate(double x, int components) const;
 };
 
 #endif

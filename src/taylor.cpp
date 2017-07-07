@@ -34,12 +34,6 @@ Taylor::~Taylor() {
 	delete[] derivatives;
 }
 
-double Taylor::getDerivative(unsigned int index) const {
-	if (index >= arrsize)
-		return 0;
-	return derivatives[index];
-}
-
 void Taylor::setDerivative(unsigned int index, double value) {
 	if (index >= arrsize)
 		resize(index);
@@ -70,15 +64,20 @@ void Taylor::Init(unsigned int size, double a_value) {
 }
 
 double Taylor::Calculate(double x) const {
-	double base = derivatives[0];
+	return this->Calculate(x, this->arrsize - 1);
+}
+
+double Taylor::Calculate(double x, int components) const {
+	double base = getDerivative(0);
 	double delta = x - position;
 	double powc = 1;
 	unsigned long faccounter = 1;
-	for (unsigned int i = 1; i < arrsize; i++) {
+	for (unsigned int i = 1; i <= components; i++) {
 		faccounter *= i;
 		powc *= delta;
-		base += (derivatives[i] / faccounter) * powc;
+		base += (getDerivative(i) / faccounter) * powc;
 	}
 
 	return base;
+
 }
