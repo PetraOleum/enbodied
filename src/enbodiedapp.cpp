@@ -57,6 +57,11 @@ bool EnbodiedApp::OnInit() {
 
 void EnbodiedApp::OnLoop() {
 
+	if (centreOnISS) {
+		centreX = ISS.posX;
+		centreY = ISS.posY;
+	}
+
 	std::pair<double, double> of = force(ISS, Earth);
 //	printf("%f, %f\t", of.first, of.second);
 
@@ -87,6 +92,11 @@ void EnbodiedApp::OnRender() {
 
 	int timestep = 10;
 
+	filledCircleRGBA(renderer, 
+			(Sint16)((Earth.posX - centreX) * scale + winX / 2),
+			(Sint16)((Earth.posY - centreY) * scale + winY / 2),
+			(Sint16)(Earth.radius * scale),
+			0x60, 0x60, 0xFF, 0xFF);
 
 	SDL_Point points[201];
 
@@ -175,6 +185,9 @@ void EnbodiedApp::onKeyDown(SDL_KeyboardEvent * keyEvent) {
 			break;
 		case SDLK_DOWN:
 			centreY += 50 / scale;
+			break;
+		case SDLK_c:
+			centreOnISS = !centreOnISS;
 			break;
 		default:
 			break;

@@ -23,6 +23,7 @@ set(SOURCE_FILES
 add_executable(enbodied ${SOURCE_FILES})
 target_link_libraries(enbodied m)
 target_link_libraries(enbodied ${SDL2_LIBRARIES})
+target_link_libraries(enbodied SDL2_gfx)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 

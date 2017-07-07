@@ -2,6 +2,7 @@
 #define ENBODIEDAPP_H
 
 #include <SDL.h>
+#include <SDL2_gfxPrimitives.h>
 #include "orbitals.h"
 
 #define INIT_SCREEN_WIDTH 500
@@ -20,6 +21,8 @@ class EnbodiedApp {
 
 		double centreX = 0;
 		double centreY = 0;
+
+		bool centreOnISS = false;
 
 		double scale = 7.0e-5;
 
@@ -47,7 +50,7 @@ class EnbodiedApp {
 			1,
 			419600,
 			0,
-			5667,
+			7667,
 			false,
 			Taylor(3),
 			Taylor(3)
