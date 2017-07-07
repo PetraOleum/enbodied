@@ -2,6 +2,7 @@
 #define TAYLOR_H
 
 #include <cmath>
+#include <cstddef>
 
 /// @brief A class that holds taylor series information
 class Taylor {
