@@ -28,12 +28,7 @@ struct Body {
 	bool onRails;
 };
 
-/**
- * @brief Class that contains a prediction for the future locations of a Body
- */
-class OrbitalPrediction {
 
-};
 
 /// @brief Calculate the amount of force acting on object self by object other
 ///

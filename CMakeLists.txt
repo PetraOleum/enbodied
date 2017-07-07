@@ -17,6 +17,7 @@ set(SOURCE_FILES
 	${CMAKE_SOURCE_DIR}/main.cpp
 	${CMAKE_SOURCE_DIR}/enbodiedapp.cpp
 	${CMAKE_SOURCE_DIR}/orbitals.cpp
+	${CMAKE_SOURCE_DIR}/taylor.cpp
 )
 
 add_executable(enbodied ${SOURCE_FILES})
