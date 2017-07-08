@@ -13,6 +13,8 @@
 class EnbodiedApp {
 	private:
 
+		double currentTime = 0;
+
 		void onKeyDown(SDL_KeyboardEvent * keyEvent);
 
 		int winX = INIT_SCREEN_WIDTH;
@@ -27,6 +29,8 @@ class EnbodiedApp {
 		double scale = 7.0e-5;
 
 		double taylorTimestep = 10;
+
+		double simulationTimestep = 1;
 
 		bool running = false;
 
@@ -47,15 +51,35 @@ class EnbodiedApp {
 		};
 
 		Body ISS = {
-			400000 + 6371000,
 			0,
+			400000 + 6371000,
 			1,
 			419600,
-			0,
 			7667,
+			0,
 			false,
 			Taylor(3),
 			Taylor(3)
+		};
+
+		Body Moon = {
+			384399000,
+			0,
+			1737100,
+			7.342e+22,
+			0,
+			-1022,
+			true,
+			Taylor(),
+			Taylor()
+		};
+
+		KeplerParameters mp = {
+			0,
+			384399000,
+			0.0549,
+			27.321661 * 24 * 60 * 60,
+			M_PI
 		};
 
 	public:

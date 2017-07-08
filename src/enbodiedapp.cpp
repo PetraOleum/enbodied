@@ -56,34 +56,44 @@ bool EnbodiedApp::OnInit() {
 }
 
 void EnbodiedApp::OnLoop() {
+	currentTime += simulationTimestep;
+
+	auto moonpos = mp.calculate(currentTime);
+	Moon.posX = moonpos.first;
+	Moon.posY = moonpos.second;
+
+	std::pair<double, double> ef = force(ISS, Earth);
+	std::pair<double, double> mf = force(ISS, Moon);
+	std::pair<double, double> of = { 
+		ef.first + mf.first,
+		ef.second + mf.second
+	};
+
+	of.first /= ISS.mass;
+	of.second /= ISS.mass;
+	ISS.tayX.setDerivative(3, ( of.first - ISS.tayX.getDerivative(2) ) / simulationTimestep);
+	ISS.tayX.setDerivative(2, of.first);
+	ISS.tayX.setDerivative(1, ISS.velX + of.first);
+	ISS.velX += of.first * simulationTimestep;
+	ISS.tayX.setDerivative(0, ISS.posX + ISS.velX);
+	ISS.posX += ISS.velX * simulationTimestep;
+
+	ISS.tayY.setDerivative(3, (of.second - ISS.tayY.getDerivative(2)) / simulationTimestep);
+	ISS.tayY.setDerivative(2, of.second);
+	ISS.tayY.setDerivative(1, ISS.velY + of.second);
+	ISS.velY += of.second * simulationTimestep;
+	ISS.tayY.setDerivative(0, ISS.posY + ISS.velY);
+	ISS.posY += ISS.velY * simulationTimestep;
+
+}
+
+void EnbodiedApp::OnRender() {
 
 	if (centreOnISS) {
 		centreX = ISS.posX;
 		centreY = ISS.posY;
 	}
 
-	std::pair<double, double> of = force(ISS, Earth);
-//	printf("%f, %f\t", of.first, of.second);
-
-	of.first /= ISS.mass;
-	of.second /= ISS.mass;
-	ISS.tayX.setDerivative(3, of.first - ISS.tayX.getDerivative(2));
-	ISS.tayX.setDerivative(2, of.first);
-	ISS.velX += of.first;
-	ISS.tayX.setDerivative(1, ISS.velX);
-	ISS.posX += ISS.velX;
-	ISS.tayX.setDerivative(0, ISS.posX);
-
-	ISS.tayY.setDerivative(3, of.second - ISS.tayY.getDerivative(2));
-	ISS.tayY.setDerivative(2, of.second);
-	ISS.velY += of.second;
-	ISS.tayY.setDerivative(1, ISS.velY);
-	ISS.posY += ISS.velY;
-	ISS.tayY.setDerivative(0, ISS.posY);
-
-}
-
-void EnbodiedApp::OnRender() {
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(renderer);
 	SDL_GetWindowSize(window, &winX, &winY);
@@ -95,6 +105,12 @@ void EnbodiedApp::OnRender() {
 			(Sint16)((Earth.posY - centreY) * scale + winY / 2),
 			(Sint16)(Earth.radius * scale),
 			0x60, 0x60, 0xFF, 0xFF);
+
+	filledCircleRGBA(renderer, 
+			(Sint16)((Moon.posX - centreX) * scale + winX / 2),
+			(Sint16)((Moon.posY - centreY) * scale + winY / 2),
+			(Sint16)(Moon.radius * scale),
+			0x60, 0x60, 0x60, 0xFF);
 
 	SDL_Point points[201];
 
@@ -192,6 +208,12 @@ void EnbodiedApp::onKeyDown(SDL_KeyboardEvent * keyEvent) {
 			break;
 		case SDLK_PAGEDOWN:
 			taylorTimestep = (taylorTimestep <= 0) ? 10 : taylorTimestep / 1.1;
+			break;
+		case SDLK_PERIOD:
+			simulationTimestep = (simulationTimestep <= 0) ? 1 : simulationTimestep * 1.1;
+			break;
+		case SDLK_COMMA:
+			simulationTimestep = (simulationTimestep <= 0) ? 1 : simulationTimestep / 1.1;
 			break;
 		default:
 			break;
